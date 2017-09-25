@@ -43,6 +43,14 @@ class Pix2PixModel(BaseModel):
                 self.gpu_ids,
             )
 
+        if not self.isTrain or opt.continue_train:
+            self.load_network(self.netG, 'G', opt.which_epoch)
+            if self.isTrain:
+                self.load_network(self.netD, 'D', opt.which_epoch)
+
+        if self.isTrain:
+            self.fake_AB_pool = ImagePool(opt.pool_size)
+
 if __name__ == "__main__":
     pix2pix = Pix2PixModel()
     random = None
